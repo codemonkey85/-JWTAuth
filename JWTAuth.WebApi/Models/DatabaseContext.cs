@@ -11,8 +11,8 @@ public partial class DatabaseContext : DbContext
     {
     }
 
-    public virtual DbSet<Employee>? Employees { get; set; }
-    public virtual DbSet<UserInfo>? UserInfos { get; set; }
+    public virtual DbSet<Employee> Employees { get; set; } = default!;
+    public virtual DbSet<UserInfo> UserInfos { get; set; } = default!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

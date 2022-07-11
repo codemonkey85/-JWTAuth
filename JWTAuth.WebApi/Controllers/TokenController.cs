@@ -28,9 +28,9 @@ public class TokenController : ControllerBase
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                     new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
                     new Claim("UserId", user.UserId.ToString()),
-                    new Claim("DisplayName", user.DisplayName),
-                    new Claim("UserName", user.UserName),
-                    new Claim("Email", user.Email)
+                    new Claim("DisplayName", user.DisplayName ?? string.Empty),
+                    new Claim("UserName", user.UserName ?? string.Empty),
+                    new Claim("Email", user.Email ?? string.Empty)
                 };
 
                 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
@@ -55,5 +55,5 @@ public class TokenController : ControllerBase
         }
     }
 
-    private async Task<UserInfo> GetUser(string email, string password) => await _context.UserInfos.FirstOrDefaultAsync(u => u.Email == email && u.Password == password);
+    private async Task<UserInfo?> GetUser(string email, string password) => await _context.UserInfos.FirstOrDefaultAsync(u => u.Email == email && u.Password == password);
 }

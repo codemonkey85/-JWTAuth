@@ -1,13 +1,14 @@
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+var services = builder.Services;
+var config = builder.Configuration;
 
-//Donot forgot to add ConnectionStrings as "dbConnection" to the appsetting.json file
-builder.Services.AddDbContext<DatabaseContext>
-    (options => options.UseSqlServer(builder.Configuration.GetConnectionString("dbConnection")));
-builder.Services.AddTransient<IEmployees, EmployeeRepository>();
-builder.Services.AddControllers();
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+services
+    .AddDbContext<DatabaseContext>(options => options.UseSqlServer(config.GetConnectionString("dbConnection")))
+    .AddTransient<IEmployees, EmployeeRepository>()
+    .AddControllers();
+
+services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
     options.RequireHttpsMetadata = false;
     options.SaveToken = true;
@@ -15,29 +16,28 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     {
         ValidateIssuer = true,
         ValidateAudience = true,
-        ValidAudience = builder.Configuration["Jwt:Audience"],
-        ValidIssuer = builder.Configuration["Jwt:Issuer"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+        ValidAudience = config["Jwt:Audience"],
+        ValidIssuer = config["Jwt:Issuer"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]))
     };
 });
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+services.AddEndpointsApiExplorer();
+services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app
+        .UseSwagger()
+        .UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
-
-app.UseAuthentication();
-
-app.UseAuthorization();
+app
+    .UseHttpsRedirection()
+    .UseAuthentication()
+    .UseAuthorization();
 
 app.MapControllers();
 
