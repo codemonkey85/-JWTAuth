@@ -23,7 +23,7 @@ public class EmployeeRepository : IEmployees
         try
         {
             var employee = _dbContext.Employees.Find(id);
-            return employee ?? throw new ArgumentNullException();
+            return employee ?? throw new ArgumentNullException(nameof(employee));
         }
         catch
         {
@@ -67,7 +67,7 @@ public class EmployeeRepository : IEmployees
             {
                 throw new ArgumentNullException(nameof(employee));
             }
-            
+
             _dbContext.Employees.Remove(employee);
             _dbContext.SaveChanges();
             return employee;
@@ -78,5 +78,5 @@ public class EmployeeRepository : IEmployees
         }
     }
 
-    public bool CheckEmployee(int id) => _dbContext.Employees.Any(e => e.EmployeeID == id);
+    public bool CheckEmployee(int id) => _dbContext.Employees.Any(e => e.EmployeeId == id);
 }

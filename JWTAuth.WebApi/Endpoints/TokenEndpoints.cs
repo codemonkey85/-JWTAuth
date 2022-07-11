@@ -16,14 +16,14 @@ public static class TokenEndpoints
         {
             return Results.BadRequest();
         }
-        
-        var user = await GetUser(userData.Email, userData.Password, config, context);
+
+        var user = await GetUser(userData.Email, userData.Password, context);
 
         if (user is null)
         {
             return Results.BadRequest("Invalid credentials");
         }
-        
+
         var claims = new[]
         {
             new Claim(JwtRegisteredClaimNames.Sub, config["Jwt:Subject"]),
@@ -47,6 +47,6 @@ public static class TokenEndpoints
         return Results.Ok(new JwtSecurityTokenHandler().WriteToken(token));
     }
 
-    private static async Task<UserInfo?> GetUser(string email, string password, IConfiguration config, DatabaseContext context) =>
+    private static async Task<UserInfo?> GetUser(string email, string password, DatabaseContext context) =>
         await context.UserInfos.FirstOrDefaultAsync(u => u.Email == email && u.Password == password);
 }

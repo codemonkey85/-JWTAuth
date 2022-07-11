@@ -24,12 +24,12 @@ namespace JWTAuth.WebApi.Migrations
 
             modelBuilder.Entity("JWTAuth.WebApi.Models.Employee", b =>
                 {
-                    b.Property<int>("EmployeeID")
+                    b.Property<int>("EmployeeId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("EmployeeID");
+                        .HasColumnName("EmployeeId");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EmployeeID"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EmployeeId"), 1L, 1);
 
                     b.Property<DateTime>("BirthDate")
                         .IsUnicode(false)
@@ -54,7 +54,7 @@ namespace JWTAuth.WebApi.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(50)");
 
-                    b.Property<string>("LoginID")
+                    b.Property<string>("LoginId")
                         .HasMaxLength(256)
                         .IsUnicode(false)
                         .HasColumnType("varchar(256)");
@@ -68,7 +68,7 @@ namespace JWTAuth.WebApi.Migrations
                         .IsUnicode(false)
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("NationalIDNumber")
+                    b.Property<string>("NationalIdNumber")
                         .HasMaxLength(15)
                         .IsUnicode(false)
                         .HasColumnType("varchar(15)");
@@ -86,7 +86,7 @@ namespace JWTAuth.WebApi.Migrations
                         .IsUnicode(false)
                         .HasColumnType("smallint");
 
-                    b.HasKey("EmployeeID");
+                    b.HasKey("EmployeeId");
 
                     b.ToTable("Employee", (string)null);
                 });

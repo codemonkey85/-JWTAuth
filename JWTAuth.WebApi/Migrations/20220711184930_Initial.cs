@@ -13,11 +13,11 @@ namespace JWTAuth.WebApi.Migrations
                 name: "Employee",
                 columns: table => new
                 {
-                    EmployeeID = table.Column<int>(type: "int", nullable: false)
+                    EmployeeId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    NationalIDNumber = table.Column<string>(type: "varchar(15)", unicode: false, maxLength: 15, nullable: true),
+                    NationalIdNumber = table.Column<string>(type: "varchar(15)", unicode: false, maxLength: 15, nullable: true),
                     EmployeeName = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true),
-                    LoginID = table.Column<string>(type: "varchar(256)", unicode: false, maxLength: 256, nullable: true),
+                    LoginId = table.Column<string>(type: "varchar(256)", unicode: false, maxLength: 256, nullable: true),
                     JobTitle = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
                     BirthDate = table.Column<DateTime>(type: "datetime2", unicode: false, nullable: false),
                     MaritalStatus = table.Column<string>(type: "varchar(1)", unicode: false, maxLength: 1, nullable: true),
@@ -30,7 +30,7 @@ namespace JWTAuth.WebApi.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Employee", x => x.EmployeeID);
+                    table.PrimaryKey("PK_Employee", x => x.EmployeeId);
                 });
 
             migrationBuilder.CreateTable(

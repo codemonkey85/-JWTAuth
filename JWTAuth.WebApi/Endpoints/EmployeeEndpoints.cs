@@ -15,10 +15,8 @@ public static class EmployeeEndpoints
     }
 
     [Authorize]
-    private static async Task<IResult> GetAllEmployees([FromServices] IEmployees _IEmployee)
-    {
-        return Results.Ok(await Task.FromResult(_IEmployee.GetEmployeeDetails()));
-    }
+    private static async Task<IResult> GetAllEmployees([FromServices] IEmployees _IEmployee) =>
+        Results.Ok(await Task.FromResult(_IEmployee.GetEmployeeDetails()));
 
     [Authorize]
     private static async Task<IResult> GetEmployee(int id, [FromServices] IEmployees _IEmployee)
@@ -31,14 +29,13 @@ public static class EmployeeEndpoints
     private static async Task<IResult> Post(Employee employee, [FromServices] IEmployees _IEmployee)
     {
         _IEmployee.AddEmployee(employee);
-        //return await Task.FromResult(CreatedAtAction("GetEmployees", new { id = employee.EmployeeID }, employee));
-        return Results.Ok(employee);
+        return Results.CreatedAtRoute("GetEmployees", new { id = employee.EmployeeId }, employee);
     }
 
     [Authorize]
     private static async Task<IResult> Put(int id, Employee employee, [FromServices] IEmployees _IEmployee)
     {
-        if (id != employee.EmployeeID)
+        if (id != employee.EmployeeId)
         {
             return Results.BadRequest();
         }

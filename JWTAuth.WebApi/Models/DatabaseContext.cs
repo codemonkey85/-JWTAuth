@@ -48,9 +48,9 @@ public partial class DatabaseContext : DbContext
         {
             entity.ToTable(nameof(Employee));
 
-            entity.Property(e => e.EmployeeID).HasColumnName(nameof(Employee.EmployeeID));
+            entity.Property(e => e.EmployeeId).HasColumnName(nameof(Employee.EmployeeId));
 
-            entity.Property(e => e.NationalIDNumber)
+            entity.Property(e => e.NationalIdNumber)
                   .HasMaxLength(15)
                   .IsUnicode(false);
 
@@ -58,7 +58,7 @@ public partial class DatabaseContext : DbContext
                   .HasMaxLength(100)
                   .IsUnicode(false);
 
-            entity.Property(e => e.LoginID)
+            entity.Property(e => e.LoginId)
                   .HasMaxLength(256)
                   .IsUnicode(false);
 
