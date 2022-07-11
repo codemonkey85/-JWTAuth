@@ -27,6 +27,10 @@ services.AddSwaggerGen();
 
 var app = builder.Build();
 
+app.MapTokenEndpoints();
+app.MapWeatherEndpoints();
+app.MapEmployeeEndpoints();
+
 if (app.Environment.IsDevelopment())
 {
     app

@@ -63,16 +63,14 @@ public class EmployeeRepository : IEmployees
         {
             var employee = _dbContext.Employees.Find(id);
 
-            if (employee != null)
-            {
-                _dbContext.Employees.Remove(employee);
-                _dbContext.SaveChanges();
-                return employee;
-            }
-            else
+            if (employee is null)
             {
                 throw new ArgumentNullException(nameof(employee));
             }
+            
+            _dbContext.Employees.Remove(employee);
+            _dbContext.SaveChanges();
+            return employee;
         }
         catch
         {
