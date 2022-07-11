@@ -1,19 +1,16 @@
-﻿using JWTAuth.WebApi.Models;
+﻿namespace JWTAuth.WebApi.Interface;
 
-namespace JWTAuth.WebApi.Interface
+public interface IEmployees
 {
-    public interface IEmployees
-    {
-        public List<Employee> GetEmployeeDetails();
+    public List<Employee> GetEmployeeDetails();
 
-        public Employee GetEmployeeDetails(int id);
+    public Employee GetEmployeeDetails(int id);
 
-        public void AddEmployee(Employee employee);
+    public void AddEmployee(Employee employee);
 
-        public void UpdateEmployee(Employee employee);
+    public void UpdateEmployee(Employee employee);
 
-        public Employee DeleteEmployee(int id);
+    public Employee DeleteEmployee(int id);
 
-        public bool CheckEmployee(int id);
-    }
+    public bool CheckEmployee(int id);
 }

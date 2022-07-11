@@ -1,11 +1,3 @@
-using JWTAuth.WebApi.Interface;
-using JWTAuth.WebApi.Models;
-using JWTAuth.WebApi.Repository;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.

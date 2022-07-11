@@ -1,88 +1,68 @@
-﻿using JWTAuth.WebApi.Interface;
-using JWTAuth.WebApi.Models;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿namespace JWTAuth.WebApi.Controllers;
 
-namespace JWTAuth.WebApi.Controllers
+[Authorize]
+[Route("api/employee")]
+[ApiController]
+public class EmployeeController : ControllerBase
 {
-    [Authorize]
-    [Route("api/employee")]
-    [ApiController]
-    public class EmployeeController : ControllerBase
+    private readonly IEmployees _IEmployee;
+
+    public EmployeeController(IEmployees IEmployee) => _IEmployee = IEmployee;
+
+    // GET: api/employee>
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<Employee>>> Get() => await Task.FromResult(_IEmployee.GetEmployeeDetails());
+
+    // GET api/employee/5
+    [HttpGet("{id}")]
+    public async Task<ActionResult<Employee>> Get(int id)
     {
-        private readonly IEmployees _IEmployee;
+        var employees = await Task.FromResult(_IEmployee.GetEmployeeDetails(id));
+        return employees == null ? (ActionResult<Employee>)NotFound() : (ActionResult<Employee>)employees;
+    }
 
-        public EmployeeController(IEmployees IEmployee)
+    // POST api/employee
+    [HttpPost]
+    public async Task<ActionResult<Employee>> Post(Employee employee)
+    {
+        _IEmployee.AddEmployee(employee);
+        //return await Task.FromResult(CreatedAtAction("GetEmployees", new { id = employee.EmployeeID }, employee));
+        return await Task.FromResult(employee);
+    }
+
+    // PUT api/employee/5
+    [HttpPut("{id}")]
+    public async Task<ActionResult<Employee>> Put(int id, Employee employee)
+    {
+        if (id != employee.EmployeeID)
         {
-            _IEmployee = IEmployee;
+            return BadRequest();
         }
-
-        // GET: api/employee>
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Employee>>> Get()
+        try
         {
-            return await Task.FromResult(_IEmployee.GetEmployeeDetails());
+            _IEmployee.UpdateEmployee(employee);
         }
-
-        // GET api/employee/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Employee>> Get(int id)
+        catch (DbUpdateConcurrencyException)
         {
-            var employees = await Task.FromResult(_IEmployee.GetEmployeeDetails(id));
-            if (employees == null)
+            if (!EmployeeExists(id))
             {
                 return NotFound();
             }
-            return employees;
-        }
-
-        // POST api/employee
-        [HttpPost]
-        public async Task<ActionResult<Employee>> Post(Employee employee)
-        {
-            _IEmployee.AddEmployee(employee);
-            //return await Task.FromResult(CreatedAtAction("GetEmployees", new { id = employee.EmployeeID }, employee));
-            return await Task.FromResult(employee);
-        }
-
-        // PUT api/employee/5
-        [HttpPut("{id}")]
-        public async Task<ActionResult<Employee>> Put(int id, Employee employee)
-        {
-            if (id != employee.EmployeeID)
+            else
             {
-                return BadRequest();
+                throw;
             }
-            try
-            {
-                _IEmployee.UpdateEmployee(employee);
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!EmployeeExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-            return await Task.FromResult(employee);
         }
-
-        // DELETE api/employee/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<Employee>> Delete(int id)
-        {
-            var employee = _IEmployee.DeleteEmployee(id);
-            return await Task.FromResult(employee);
-        }
-
-        private bool EmployeeExists(int id)
-        {
-            return _IEmployee.CheckEmployee(id);
-        }
+        return await Task.FromResult(employee);
     }
+
+    // DELETE api/employee/5
+    [HttpDelete("{id}")]
+    public async Task<ActionResult<Employee>> Delete(int id)
+    {
+        var employee = _IEmployee.DeleteEmployee(id);
+        return await Task.FromResult(employee);
+    }
+
+    private bool EmployeeExists(int id) => _IEmployee.CheckEmployee(id);
 }
